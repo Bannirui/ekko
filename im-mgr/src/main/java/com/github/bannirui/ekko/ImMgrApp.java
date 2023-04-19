@@ -1,6 +1,5 @@
 package com.github.bannirui.ekko;
 
-import org.apache.dubbo.config.spring.context.annotation.EnableDubbo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -14,7 +13,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @since 2023/4/19
  */
 @SpringBootApplication
-@EnableDubbo
 public class ImMgrApp implements CommandLineRunner {
 
     private static final Logger LOG = LoggerFactory.getLogger(ImMgrApp.class);
