@@ -20,6 +20,7 @@
     <module>im-mgr</module>
     <module>im-client</module>
     <module>im-server</module>
+    <module>bean</module>
   </modules>
 
   <properties>
@@ -30,6 +31,7 @@
 
     <curator.version>5.4.0</curator.version>
     <dubbo.version>3.2.0</dubbo.version>
+    <pbf.version>3.19.4</pbf.version>
   </properties>
 
   <dependencyManagement>
@@ -44,6 +46,12 @@
         <groupId>org.apache.dubbo</groupId>
         <artifactId>dubbo-spring-boot-starter</artifactId>
         <version>${dubbo.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.google.protobuf</groupId>
+        <artifactId>protobuf-java</artifactId>
+        <version>${pbf.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
