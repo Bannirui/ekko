@@ -4,14 +4,11 @@
 
 <br/>
 
+![Hex.pm](https://img.shields.io/hexpm/l/plug)
+![Bitbucket open issues](https://img.shields.io/bitbucket/issues/Bannirui/ekko)
+
 a IM system implements via Java, basing on Netty.
 </div>
-
-* [介绍](#介绍) <br/>
-* [系统架构](#系统架构) <br/>
-* [快速启动](#快速启动) <br/>
-* [内置命令](#客户端内置命令) <br/>
-* [TODO LIST](./TODO.md) <br/>
 
 <br/>
 
