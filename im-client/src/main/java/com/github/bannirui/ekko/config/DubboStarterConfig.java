@@ -4,6 +4,8 @@ import org.apache.dubbo.config.spring.context.annotation.EnableDubbo;
 import org.springframework.context.annotation.Configuration;
 
 /**
+ * 启动器.
+ *
  * @author dingrui
  * @since 2023/4/19
  */

@@ -13,16 +13,16 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @since 2023/4/19
  */
 @SpringBootApplication
-public class ImMgrApp implements CommandLineRunner {
+public class ImServerApp implements CommandLineRunner {
 
-    private static final Logger LOG = LoggerFactory.getLogger(ImMgrApp.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ImServerApp.class);
 
     public static void main(String[] args) {
-        SpringApplication.run(ImMgrApp.class, args);
+        SpringApplication.run(ImServerApp.class, args);
     }
 
     @Override
     public void run(String... args) throws Exception {
-        LOG.info("[IM-MGR] 启动成功.");
+        LOG.info("[IM-SERVER] 启动成功");
     }
 }

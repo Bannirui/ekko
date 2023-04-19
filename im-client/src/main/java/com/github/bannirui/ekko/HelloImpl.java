@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class HelloImpl implements CommandLineRunner {
 
-    @DubboReference
+    @DubboReference(check = false)
     private Hello hello;
 
     @Override
