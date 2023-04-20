@@ -21,6 +21,7 @@
     <module>im-client</module>
     <module>im-server</module>
     <module>bean</module>
+    <module>common</module>
   </modules>
 
   <properties>
@@ -35,6 +36,8 @@
     <mybatisplus.version>3.5.3.1</mybatisplus.version>
     <mysql.version>8.0.32</mysql.version>
     <junit.version>4.13.2</junit.version>
+    <common-lang3.version>3.12.0</common-lang3.version>
+    <common-collections.version>3.2.2</common-collections.version>
   </properties>
 
   <dependencyManagement>
@@ -74,6 +77,18 @@
         <artifactId>junit</artifactId>
         <version>${junit.version}</version>
         <scope>test</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>org.apache.commons</groupId>
+        <artifactId>commons-lang3</artifactId>
+        <version>${common-lang3.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>commons-collections</groupId>
+        <artifactId>commons-collections</artifactId>
+        <version>${common-collections.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>

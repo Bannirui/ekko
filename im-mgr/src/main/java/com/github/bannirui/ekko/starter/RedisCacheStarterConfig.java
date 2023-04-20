@@ -33,8 +33,6 @@ public class RedisCacheStarterConfig {
             .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(StringRedisSerializer.UTF_8))
             // value采用jackson序列化
             .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(serializer()))
-            // value不缓存
-            .disableCachingNullValues()
             // 缓存空间名称前缀
             .prefixCacheNameWith("im:")
             // 全局TTL

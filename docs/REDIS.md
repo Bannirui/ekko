@@ -6,6 +6,7 @@
 * @CacheConfig注解不指定keyGenerator策略
     * key=缓存全局配置的前缀+CacheConfig注解的cacheNames+::+Cacheable注解的key
 * @CacheConfig注解指定keyGenerator策略
+    * key的优先级是方法@Cacheable注解的key方法高于类的@CacheConfig的keyGenerator
 * 指定缓存组的方式
     * @CacheConfig注解的cacheNames方法
     * @Cacheable注解的value方法
