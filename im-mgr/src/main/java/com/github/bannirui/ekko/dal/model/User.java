@@ -1,22 +1,19 @@
 package com.github.bannirui.ekko.dal.model;
 
-import java.io.Serial;
-import java.io.Serializable;
-
 /**
  * 用户.
  *
  * @author dingrui
  * @since 2023/4/20
  */
-public class User implements Serializable {
-
-    @Serial
-    private static final long serialVersionUID = -954023051862876873L;
+public class User {
 
     private Long id;
     private long uid;
     private String nickname;
+
+    public User() {
+    }
 
     public User(long uid, String nickname) {
         this.uid = uid;

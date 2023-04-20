@@ -35,4 +35,10 @@ public class UserServiceTest {
         Assert.assertNotNull(one);
         Assert.assertEquals(1L, one.getUid());
     }
+
+    @Test
+    public void test02() {
+        User ret = this.userService.test(1L);
+        System.out.println(ret);
+    }
 }

@@ -11,4 +11,5 @@ import com.github.bannirui.ekko.dal.model.User;
  */
 public interface UserService extends IService<User> {
 
+    User test(long uid);
 }
