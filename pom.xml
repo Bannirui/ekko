@@ -32,6 +32,9 @@
     <curator.version>5.4.0</curator.version>
     <dubbo.version>3.2.0</dubbo.version>
     <pbf.version>3.19.4</pbf.version>
+    <mybatisplus.version>3.5.3.1</mybatisplus.version>
+    <mysql.version>8.0.32</mysql.version>
+    <junit.version>4.13.2</junit.version>
   </properties>
 
   <dependencyManagement>
@@ -52,6 +55,25 @@
         <groupId>com.google.protobuf</groupId>
         <artifactId>protobuf-java</artifactId>
         <version>${pbf.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.baomidou</groupId>
+        <artifactId>mybatis-plus-boot-starter</artifactId>
+        <version>${mybatisplus.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>mysql</groupId>
+        <artifactId>mysql-connector-java</artifactId>
+        <version>${mysql.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>${junit.version}</version>
+        <scope>test</scope>
       </dependency>
     </dependencies>
   </dependencyManagement>
