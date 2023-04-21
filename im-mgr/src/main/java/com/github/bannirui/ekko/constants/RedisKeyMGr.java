@@ -8,5 +8,8 @@ package com.github.bannirui.ekko.constants;
  */
 public interface RedisKeyMGr {
 
+    String USER = "user";
     String LOGIN_USER = "login";
+    String PEER = "peer";
+    String ONLINE_PEER = "online";
 }

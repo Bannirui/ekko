@@ -31,4 +31,16 @@ public interface OpCode {
         // 重复登陆
         long RE_LOGIN = 1L << 4;
     }
+
+    /**
+     * im server相关.
+     */
+    interface Peer {
+
+        // 服务器不存在
+        long NOT_EXIST = 1L << 1;
+
+        // 服务器已经在线
+        long ALREADY_ONLINE = 1L << 1;
+    }
 }

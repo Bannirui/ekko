@@ -25,7 +25,7 @@ import org.springframework.stereotype.Service;
  * @since 2023/4/20
  */
 @Service
-@CacheConfig(cacheNames = "user", keyGenerator = "keyGenerator")
+@CacheConfig(cacheNames = RedisKeyMGr.USER, keyGenerator = "keyGenerator")
 public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserService {
 
     private final UserDao userDao;
@@ -46,7 +46,7 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
         return ret.getNickname();
     }
 
-    @CachePut(key = "'login_'+#uid+'_'+#uname")
+    @CachePut(cacheNames = RedisKeyMGr.LOGIN_USER, key = "#uid+'_'+#uname")
     @Override
     public long login(Long uid, String uname) {
         if (Objects.isNull(uid) || Objects.isNull(uname) || StringUtils.isBlank(uname)) {
@@ -87,13 +87,21 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
     }
 
     // 登陆用户信息查询
-    @Cacheable(key = "'login_'+#uid+'_'+#uname")
+    @Cacheable(cacheNames = RedisKeyMGr.LOGIN_USER, key = "#uid+'_'+#uname")
     public long loginCheck(Long uid, String uname) {
         return OpCode.User.NOT_LOGIN;
     }
 
+    /**
+     * 登陆的用户没有ttl 由退出登陆负责删除缓存.
+     */
+    @CachePut(cacheNames = RedisKeyMGr.LOGIN_USER, key = "#uid+'_'+#uname")
+    public void putCache() {
+
+    }
+
     // 登陆用户信息删除
-    @CacheEvict(key = "'login_'+#uid+'_'+#uname")
+    @CacheEvict(cacheNames = RedisKeyMGr.LOGIN_USER, key = "#uid+'_'+#uname")
     public void loginClear(Long uid, String uname) {
 
     }

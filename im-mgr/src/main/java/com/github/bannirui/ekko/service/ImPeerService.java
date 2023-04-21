@@ -19,13 +19,15 @@ public interface ImPeerService {
      * 服务器上线.
      *
      * @param path ip:im-port
+     * @return 操作状态码 {@link com.github.bannirui.ekko.constants.OpCode}
      */
-    void add(String path);
+    long add(String path);
 
     /**
      * 服务器下线.
      *
      * @param path ip:im-port
+     * @return 操作状态码 {@link com.github.bannirui.ekko.constants.OpCode}
      */
-    void discard(String path);
+    long discard(String path);
 }
