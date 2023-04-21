@@ -1,4 +1,4 @@
-package com.github.bannirui.ekko.handler;
+package com.github.bannirui.ekko.netty.handler;
 
 import com.github.bannirui.ekko.bean.pb.TestProto;
 import io.netty.channel.Channel;

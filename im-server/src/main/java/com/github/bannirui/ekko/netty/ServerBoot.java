@@ -1,6 +1,6 @@
 package com.github.bannirui.ekko.netty;
 
-import com.github.bannirui.ekko.handler.MyHandlerInitializer;
+import com.github.bannirui.ekko.netty.handler.MyHandlerInitializer;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 /**
@@ -23,6 +24,9 @@ public class ServerBoot implements InitializingBean, DisposableBean {
 
     private static final Logger LOG = LoggerFactory.getLogger(ServerBoot.class);
 
+    @Value("${im-server.im-port}")
+    private int imPort;
+
     private EventLoopGroup bossGroup = new NioEventLoopGroup(1);
     private EventLoopGroup workGroup = new NioEventLoopGroup();
 
@@ -35,11 +39,11 @@ public class ServerBoot implements InitializingBean, DisposableBean {
                 .option(ChannelOption.SO_BACKLOG, 100)
                 .childOption(ChannelOption.SO_KEEPALIVE, true)
                 .childHandler(new MyHandlerInitializer());
-            bootstrap.bind(9527).sync();
+            bootstrap.bind(this.imPort).sync();
         } catch (Exception e) {
             this.bossGroup.shutdownGracefully();
             this.workGroup.shutdownGracefully();
-            // TODO: 2023/4/19 自定义异常上抛
+            throw new IllegalStateException("IM-SERVER初始化netty失败.");
         }
     }
 

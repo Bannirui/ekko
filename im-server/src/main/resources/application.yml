@@ -4,3 +4,11 @@ server:
 spring:
   application:
     name: im-server
+
+im-server:
+  im-port: 9527
+  registry:
+    zk:
+      host: 127.0.0.1
+      port: 2181
+      root: /im-peers
