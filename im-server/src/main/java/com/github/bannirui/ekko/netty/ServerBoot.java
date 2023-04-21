@@ -27,6 +27,9 @@ public class ServerBoot implements InitializingBean, DisposableBean {
     @Value("${im-server.im-port}")
     private int imPort;
 
+    @Value("${im-server.health.heart-beat.client-to-server-s}")
+    private int client2ServerHeartBeatS;
+
     private EventLoopGroup bossGroup = new NioEventLoopGroup(1);
     private EventLoopGroup workGroup = new NioEventLoopGroup();
 
@@ -38,12 +41,14 @@ public class ServerBoot implements InitializingBean, DisposableBean {
                 .channel(NioServerSocketChannel.class)
                 .option(ChannelOption.SO_BACKLOG, 100)
                 .childOption(ChannelOption.SO_KEEPALIVE, true)
-                .childHandler(new MyHandlerInitializer());
+                .childHandler(new MyHandlerInitializer(this.client2ServerHeartBeatS));
             bootstrap.bind(this.imPort).sync();
+            LOG.info("[IM-SERVER] 初始化netty");
         } catch (Exception e) {
             this.bossGroup.shutdownGracefully();
             this.workGroup.shutdownGracefully();
-            throw new IllegalStateException("IM-SERVER初始化netty失败.");
+            LOG.info("[IM-SERVER] 初始化netty失败");
+            throw new IllegalStateException("[IM-SERVER] 初始化netty失败");
         }
     }
 

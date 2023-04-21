@@ -14,3 +14,8 @@ dubbo:
   protocol:
     name: dubbo
     port: 20881
+
+im-client:
+  health:
+    heart-beat:
+      client-to-server-s: 10

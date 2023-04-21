@@ -7,6 +7,9 @@ spring:
 
 im-server:
   im-port: 9527
+  health:
+    heart-beat:
+      client-to-server-s: 11
   registry:
     zk:
       host: 127.0.0.1

@@ -2,8 +2,12 @@ package com.github.bannirui.ekko.netty.handler;
 
 import com.github.bannirui.ekko.bean.pb.TestProto;
 import com.github.bannirui.ekko.bean.pb.TestProto.Person;
+import com.github.bannirui.ekko.common.util.SpringCtxUtil;
+import com.github.bannirui.ekko.service.HealthService;
+import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import io.netty.handler.timeout.IdleStateEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,6 +15,7 @@ import org.slf4j.LoggerFactory;
  * @author dingrui
  * @since 2023/4/19
  */
+@Sharable
 public class MyHandler extends SimpleChannelInboundHandler<TestProto.Person> {
 
     private static final Logger LOG = LoggerFactory.getLogger(MyHandler.class);
@@ -29,8 +34,12 @@ public class MyHandler extends SimpleChannelInboundHandler<TestProto.Person> {
 
     @Override
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
-        // TODO: 2023/4/19
-        LOG.info("[IM-SERVER] 自定义事件: {}", evt);
+        if (evt instanceof IdleStateEvent ise) {
+            LOG.info("[IM-SERVER] 没有收到客户端的心跳");
+            // 服务端没收到客户端的心跳
+            HealthService handler = SpringCtxUtil.getBean(HealthService.class);
+            handler.process();
+        }
         super.userEventTriggered(ctx, evt);
     }
 
