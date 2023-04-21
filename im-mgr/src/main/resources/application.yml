@@ -35,3 +35,12 @@ mybatis-plus:
     use-generated-keys: true
     default-executor-type: REUSE
     use-actual-param-name: true
+
+im-mgr:
+  im-server:
+    registry:
+      # 服务器注册在zk的信息
+      zk:
+        host: 127.0.0.1
+        port: 2181
+        root: /im-peers

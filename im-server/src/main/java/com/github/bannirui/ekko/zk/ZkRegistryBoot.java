@@ -69,10 +69,10 @@ public class ZkRegistryBoot implements Runnable {
             if (client.isStarted()) {
                 String host = this.localHost();
                 this.registry(client, this.zkRoot, host + ":" + this.imPort);
-                LOG.info("[IM-SERVER] 服务器节点信息注册zk.");
+                LOG.info("[IM-SERVER] 服务器节点信息注册zk");
             }
         } catch (Exception e) {
-            throw new BizException("im-server注册zk失败", e);
+            throw new BizException("[IM-SERVER]注册zk失败", e);
         }
     }
 }
