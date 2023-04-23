@@ -86,6 +86,13 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
         return OpCode.SUCC;
     }
 
+    @Override
+    @CachePut(key = "'register_'+#user.uid")
+    public User register(User user) {
+        this.userDao.insert(user);
+        return user;
+    }
+
     // 登陆用户信息查询
     @Cacheable(cacheNames = RedisKeyMGr.LOGIN_USER, key = "#uid+'_'+#uname")
     public long loginCheck(Long uid, String uname) {

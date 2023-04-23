@@ -4,7 +4,6 @@ import com.github.bannirui.ekko.req.LoginReq;
 import com.github.bannirui.ekko.req.LogoutReq;
 import com.github.bannirui.ekko.req.RegisterReq;
 import com.github.bannirui.ekko.resp.LoginResp;
-import com.github.bannirui.ekko.resp.RegisterResp;
 
 /**
  * 用户管理.
@@ -12,12 +11,12 @@ import com.github.bannirui.ekko.resp.RegisterResp;
  * @author dingrui
  * @since 2023/4/20
  */
-public interface MemberService {
+public interface UserServiceRpc {
 
     /**
      * 用户注册.
      */
-    RegisterResp register(RegisterReq req);
+    boolean register(RegisterReq req);
 
     /**
      * 登陆.

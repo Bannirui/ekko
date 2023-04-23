@@ -28,4 +28,11 @@ public interface UserService extends IService<User> {
      * @return 操作状态码. {@link com.github.bannirui.ekko.constants.OpCode}
      */
     long logout(Long uid);
+
+    /**
+     * 用户注册.
+     *
+     * @return 声明返回值的目的仅仅是为了配合缓存场景
+     */
+    User register(User user);
 }

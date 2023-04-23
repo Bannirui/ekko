@@ -1,6 +1,6 @@
 package com.github.bannirui.ekko.rpc;
 
-import com.github.bannirui.ekko.api.MemberService;
+import com.github.bannirui.ekko.api.UserServiceRpc;
 import com.github.bannirui.ekko.bean.ImServerNode;
 import com.github.bannirui.ekko.constants.OpCode;
 import com.github.bannirui.ekko.dal.model.User;
@@ -9,7 +9,6 @@ import com.github.bannirui.ekko.req.LoginReq;
 import com.github.bannirui.ekko.req.LogoutReq;
 import com.github.bannirui.ekko.req.RegisterReq;
 import com.github.bannirui.ekko.resp.LoginResp;
-import com.github.bannirui.ekko.resp.RegisterResp;
 import com.github.bannirui.ekko.service.ImPeerService;
 import java.util.Objects;
 import org.apache.commons.lang3.StringUtils;
@@ -22,28 +21,27 @@ import org.apache.dubbo.config.annotation.DubboService;
  * @since 2023/4/20
  */
 @DubboService
-public class MemberServiceImpl implements MemberService {
+public class UserServiceRpcImpl implements UserServiceRpc {
 
     private final UserService userService;
     private final ImPeerService imPeerService;
 
-    public MemberServiceImpl(UserService userService, ImPeerService imPeerService) {
+    public UserServiceRpcImpl(UserService userService, ImPeerService imPeerService) {
         this.userService = userService;
         this.imPeerService = imPeerService;
     }
 
     @Override
-    public RegisterResp register(RegisterReq req) {
+    public boolean register(RegisterReq req) {
+        Long uid = null;
         String uname = null;
-        if (Objects.isNull(req) || (StringUtils.isBlank(uname = req.getUname()))) {
-            return null;
+        if (Objects.isNull(req) || Objects.isNull(uid = req.getUid()) || (StringUtils.isBlank(uname = req.getUname()))) {
+            return false;
         }
-        // TODO: 2023/4/20 全局唯一id方案
-        long uid = System.currentTimeMillis();
-        if (!this.userService.save(new User(uid, uname))) {
-            return null;
+        if (Objects.isNull(this.userService.register(new User(uid, uname)))) {
+            return false;
         }
-        return new RegisterResp(uid);
+        return true;
     }
 
     @Override
