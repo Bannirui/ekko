@@ -8,8 +8,14 @@ package com.github.bannirui.ekko.constants;
  */
 public interface RedisKeyMGr {
 
-    String USER = "user";
-    String LOGIN_USER = "login";
     String PEER = "peer";
     String ONLINE_PEER = "online";
+
+    interface User {
+
+        String USER = "user"; // ttl
+        String ALREADY_REGISTER = "already_register"; // ttl
+        String ALREADY_LOGIN = "already_login"; // ttl=-1
+        String ALREADY_LOGIN_SET = "already_login_set"; // ttl=-1
+    }
 }

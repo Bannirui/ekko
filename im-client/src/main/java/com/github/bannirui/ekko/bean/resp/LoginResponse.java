@@ -45,4 +45,13 @@ public class LoginResponse {
     public void setImPort(Integer imPort) {
         this.imPort = imPort;
     }
+
+    @Override
+    public String toString() {
+        return "LoginResponse{"
+            + "opCode=" + opCode
+            + ", host='" + host + '\''
+            + ", imPort=" + imPort
+            + '}';
+    }
 }

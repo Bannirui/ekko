@@ -9,6 +9,7 @@ import com.github.bannirui.ekko.constants.RedisKeyMGr;
 import com.github.bannirui.ekko.dal.mapper.UserDao;
 import com.github.bannirui.ekko.dal.model.User;
 import com.github.bannirui.ekko.dal.service.UserService;
+import com.github.bannirui.ekko.starter.RedisCacheStarterConfig;
 import java.util.Objects;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,7 @@ import org.springframework.stereotype.Service;
  * @since 2023/4/20
  */
 @Service
-@CacheConfig(cacheNames = RedisKeyMGr.USER, keyGenerator = "keyGenerator")
+@CacheConfig(cacheNames = RedisKeyMGr.User.USER, keyGenerator = RedisCacheStarterConfig.KEY_GENERATOR)
 public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserService {
 
     private final UserDao userDao;
@@ -37,35 +38,38 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
     @Autowired
     private UserServiceImpl self;
 
-    @Cacheable()
-    public String uname(Long uid) {
-        User ret = null;
-        if (Objects.isNull(uid) || Objects.isNull(ret = this.userDao.selectOne(new LambdaQueryWrapper<User>().eq(User::getUid, uid)))) {
-            return null;
+    @Override
+    public long register(User user) {
+        if (Objects.isNull(user) || Objects.isNull(user.getUid())) {
+            return OpCode.PARAM_INVALID;
         }
-        return ret.getNickname();
+        if (this.userDao.insert(user) != 1) {
+            return OpCode.FAIL;
+        }
+        this.self.alreadyRegisterPut(user);
+        return OpCode.SUCC;
     }
 
-    @CachePut(cacheNames = RedisKeyMGr.LOGIN_USER, key = "#uid+'_'+#uname")
     @Override
     public long login(Long uid, String uname) {
         if (Objects.isNull(uid) || Objects.isNull(uname) || StringUtils.isBlank(uname)) {
             return OpCode.PARAM_INVALID;
         }
-        String name = this.self.uname(uid);
-        if (Objects.isNull(name)) {
-            return OpCode.User.NOT_EXIST;
-        }
-        if (!StringUtils.equals(uname, name)) {
-            return OpCode.User.Register.NOT_REGISTER;
-        }
-        long status = this.self.loginCheck(uid, uname);
-        if (status == OpCode.SUCC) {
+        // 重复登陆
+        User loginUser = this.self.alreadyLoginLoad(uid);
+        if (Objects.nonNull(loginUser)) {
             return OpCode.User.Login.RE_LOGIN;
         }
-        if (!RedisUtil.sSet(RedisKeyMGr.LOGIN_USER, uid)) {
+        // 还未注册
+        User registerUser = this.self.alreadyRegisterLoad(uid);
+        if (Objects.isNull(registerUser) || !StringUtils.equals(uname, registerUser.getNickname())) {
+            return OpCode.User.Register.NOT_REGISTER;
+        }
+        // 登陆
+        if (!RedisUtil.sSet(RedisKeyMGr.User.ALREADY_LOGIN_SET, uid)) {
             return OpCode.FAIL;
         }
+        this.self.alreadyLoginPut(new User(uid, uname));
         return OpCode.SUCC;
     }
 
@@ -74,42 +78,118 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
         if (Objects.isNull(uid)) {
             return OpCode.PARAM_INVALID;
         }
-        String uname = this.self.uname(uid);
-        if (Objects.isNull(uname) || StringUtils.isBlank(uname)) {
-            // 已登陆用户却没有注册信息 panic
-            throw new BizException("登陆用户查无此人");
-        }
-        if (!RedisUtil.setRemove(RedisKeyMGr.LOGIN_USER, uid)) {
+        if (!this.valid(uid)) {
             return OpCode.FAIL;
         }
-        this.self.loginClear(uid, uname);
+        if (!RedisUtil.setRemove(RedisKeyMGr.User.ALREADY_LOGIN_SET, uid)) {
+            return OpCode.FAIL;
+        }
+        this.self.alreadyLoginDel(uid);
         return OpCode.SUCC;
     }
 
     @Override
-    @CachePut(key = "'register_'+#user.uid")
-    public User register(User user) {
-        this.userDao.insert(user);
-        return user;
-    }
-
-    // 登陆用户信息查询
-    @Cacheable(cacheNames = RedisKeyMGr.LOGIN_USER, key = "#uid+'_'+#uname")
-    public long loginCheck(Long uid, String uname) {
-        return OpCode.User.Login.NOT_LOGIN;
+    public Long logoff(Long uid) {
+        if (Objects.isNull(uid)) {
+            return OpCode.PARAM_INVALID;
+        }
+        if (!this.valid(uid)) {
+            return OpCode.FAIL;
+        }
+        this.self.alreadyLoginDel(uid);
+        if (!RedisUtil.setRemove(RedisKeyMGr.User.ALREADY_LOGIN_SET, uid)) {
+            return OpCode.FAIL;
+        }
+        this.userDao.delete(new LambdaQueryWrapper<User>().eq(User::getUid, uid));
+        this.self.alreadyRegisterDel(uid);
+        return OpCode.SUCC;
     }
 
     /**
-     * 登陆的用户没有ttl 由退出登陆负责删除缓存.
+     * 缓存已注册用户.
+     *
+     * @see RedisKeyMGr.User#ALREADY_REGISTER
      */
-    @CachePut(cacheNames = RedisKeyMGr.LOGIN_USER, key = "#uid+'_'+#uname")
-    public void putCache() {
+    @CachePut(key = "'already_register_'+#u.uid")
+    public User alreadyRegisterPut(User u) {
+        return u;
+    }
+
+    /**
+     * 加载已注册用户.
+     *
+     * @see RedisKeyMGr.User#ALREADY_REGISTER
+     */
+    @Cacheable(key = "'already_register_'+#uid")
+    public User alreadyRegisterLoad(Long uid) {
+        User ret = null;
+        if (Objects.isNull(uid) || Objects.isNull(ret = this.userDao.selectOne(new LambdaQueryWrapper<User>().eq(User::getUid, uid)))) {
+            return null;
+        }
+        return ret;
+    }
+
+    /**
+     * 删除已注册用户.
+     *
+     * @see RedisKeyMGr.User#ALREADY_REGISTER
+     */
+    @CacheEvict(key = "'already_register_'+#uid")
+    public void alreadyRegisterDel(Long uid) {
 
     }
 
-    // 登陆用户信息删除
-    @CacheEvict(cacheNames = RedisKeyMGr.LOGIN_USER, key = "#uid+'_'+#uname")
-    public void loginClear(Long uid, String uname) {
 
+    /**
+     * 缓存已登陆用户.
+     *
+     * @see RedisKeyMGr.User#ALREADY_LOGIN
+     */
+    @CachePut(cacheNames = RedisKeyMGr.User.ALREADY_LOGIN, key = "#u.uid")
+    public User alreadyLoginPut(User u) {
+        return u;
+    }
+
+    /**
+     * 加载已登陆用户.
+     *
+     * @see RedisKeyMGr.User#ALREADY_LOGIN
+     */
+    @Cacheable(cacheNames = RedisKeyMGr.User.ALREADY_LOGIN, key = "#uid")
+    public User alreadyLoginLoad(Long uid) {
+        return null;
+    }
+
+    /**
+     * 删除已登陆用户.
+     *
+     * @see RedisKeyMGr.User#ALREADY_LOGIN
+     */
+    @CacheEvict(cacheNames = RedisKeyMGr.User.ALREADY_LOGIN, key = "#uid")
+    public void alreadyLoginDel(Long uid) {
+
+    }
+
+    /**
+     * 用户状态验证. 用户状态前提注册过\登陆过.
+     */
+    private boolean valid(Long uid) {
+        if (Objects.isNull(uid)) {
+            return false;
+        }
+        User loginUser = this.self.alreadyLoginLoad(uid);
+        String lname = null;
+        if (Objects.isNull(loginUser) || Objects.isNull(lname = loginUser.getNickname()) || StringUtils.isBlank(lname)) {
+            throw new BizException("非登陆用户");
+        }
+        User registerUser = this.self.alreadyRegisterLoad(uid);
+        String rname = null;
+        if (Objects.isNull(registerUser) || Objects.isNull(rname = registerUser.getNickname()) || StringUtils.isBlank(rname)) {
+            throw new BizException("非注册用户");
+        }
+        if (!StringUtils.equals(lname, rname)) {
+            return false;
+        }
+        return true;
     }
 }

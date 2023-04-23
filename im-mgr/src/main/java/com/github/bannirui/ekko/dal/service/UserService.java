@@ -13,6 +13,13 @@ import com.github.bannirui.ekko.dal.model.User;
 public interface UserService extends IService<User> {
 
     /**
+     * 用户注册.
+     *
+     * @return 操作码. {@link OpCode}
+     */
+    long register(User user);
+
+    /**
      * 用户登陆. 登陆的用户取消缓存的ttl 设置不过期 缓存的删除由用户退出登陆触发
      * <ul>在redis中存储两个数据类型
      * <li>string 用于标识单用户是否在线 值就是该方法的返回值</li>
@@ -31,9 +38,9 @@ public interface UserService extends IService<User> {
     long logout(Long uid);
 
     /**
-     * 用户注册.
+     * 注销用户.
      *
-     * @return 声明返回值的目的仅仅是为了配合缓存场景
+     * @return 操作状态码. {@link OpCode}
      */
-    User register(User user);
+    Long logoff(Long uid);
 }

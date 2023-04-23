@@ -10,6 +10,7 @@ import com.github.bannirui.ekko.resp.LoginResp;
 import java.util.Objects;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.dubbo.config.annotation.DubboReference;
+import org.apache.yetus.audience.InterfaceAudience.Public;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -74,5 +75,15 @@ public class UserController {
         }
         boolean logout = this.userServiceRpc.logout(new LogoutReq(uid));
         return ResponseEntity.ok(logout);
+    }
+
+    @PostMapping("/logoff")
+    @Public
+    ResponseEntity<Long> logoff(Long uid) {
+        if (Objects.isNull(uid)) {
+            return ResponseEntity.ok(OpCode.PARAM_INVALID);
+        }
+        Long ret = this.userServiceRpc.logoff(uid);
+        return ResponseEntity.ok(ret);
     }
 }

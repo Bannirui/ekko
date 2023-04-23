@@ -1,6 +1,7 @@
 package com.github.bannirui.ekko.starter;
 
 import com.github.bannirui.ekko.constants.RedisKeyMGr;
+import com.github.bannirui.ekko.constants.RedisKeyMGr.User;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
@@ -28,12 +29,14 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 @EnableCaching
 public class RedisCacheStarterConfig {
 
+    public static final String KEY_GENERATOR = "keyGenerator";
+
     // 默认策略
     private Map<String, RedisCacheConfiguration> redisCacheConfigurationMap() {
         Map<String, RedisCacheConfiguration> map = new HashMap<>();
         // 按照分组级别 自定义ttl时间
         map.put(RedisKeyMGr.ONLINE_PEER, this.redisCacheConfigurationWithTTL(-1L)); // 在线的服务器
-        map.put(RedisKeyMGr.LOGIN_USER, this.redisCacheConfigurationWithTTL(-1L)); // 登陆的用户
+        map.put(User.ALREADY_LOGIN, this.redisCacheConfigurationWithTTL(-1L)); // 登陆的用户
         return map;
     }
 
@@ -62,24 +65,9 @@ public class RedisCacheStarterConfig {
             this.redisCacheConfigurationWithTTL(600L), // 默认ttl策略
             this.redisCacheConfigurationMap() // 对指定的cache分组进行自定义ttl策略
         );
-
-//        RedisCacheConfiguration rc = RedisCacheConfiguration.defaultCacheConfig();
-//        rc = rc
-//            // key采用string序列化
-//            .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(StringRedisSerializer.UTF_8))
-//            // value采用jackson序列化
-//            .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(serializer()))
-//            // 缓存空间名称前缀
-//            .prefixCacheNameWith("im:")
-//            // 全局TTL
-//            .entryTtl(Duration.ofMinutes(30L));
-//        return RedisCacheManager
-//            .builder(redisConnectionFactory)
-//            .cacheDefaults(rc)
-//            .build();
     }
 
-    @Bean
+    @Bean(name = {KEY_GENERATOR})
     public KeyGenerator keyGenerator() {
         /**
          * @param target 代理的类

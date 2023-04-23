@@ -27,4 +27,11 @@ public interface UserServiceRpc {
      * 退出登陆.
      */
     boolean logout(LogoutReq req);
+
+    /**
+     * 注销用户.
+     *
+     * @return 操作状态码.
+     */
+    Long logoff(Long uid);
 }

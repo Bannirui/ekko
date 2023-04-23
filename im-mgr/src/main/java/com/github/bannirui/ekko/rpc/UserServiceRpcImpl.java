@@ -3,6 +3,7 @@ package com.github.bannirui.ekko.rpc;
 import com.github.bannirui.ekko.api.UserServiceRpc;
 import com.github.bannirui.ekko.bean.ImServerNode;
 import com.github.bannirui.ekko.bean.constants.OpCode;
+import com.github.bannirui.ekko.bean.constants.OpCode.Peer;
 import com.github.bannirui.ekko.dal.model.User;
 import com.github.bannirui.ekko.dal.service.UserService;
 import com.github.bannirui.ekko.req.LoginReq;
@@ -38,10 +39,7 @@ public class UserServiceRpcImpl implements UserServiceRpc {
         if (Objects.isNull(req) || Objects.isNull(uid = req.getUid()) || (StringUtils.isBlank(uname = req.getUname()))) {
             return false;
         }
-        if (Objects.isNull(this.userService.register(new User(uid, uname)))) {
-            return false;
-        }
-        return true;
+        return this.userService.register(new User(uid, uname)) == OpCode.SUCC;
     }
 
     @Override
@@ -57,6 +55,7 @@ public class UserServiceRpcImpl implements UserServiceRpc {
         String[] host = new String[1];
         Integer[] ip = new Integer[1];
         if (!this.imPeerService.lb(x -> host[0] = x, y -> ip[0] = y)) {
+            resp.setOpCode(Peer.NOT_EXIST);
             return resp;
         }
         resp.setServer(new ImServerNode(host[0], ip[0]));
@@ -70,5 +69,13 @@ public class UserServiceRpcImpl implements UserServiceRpc {
         }
         long state = this.userService.logout(req.getUid());
         return state == OpCode.SUCC;
+    }
+
+    @Override
+    public Long logoff(Long uid) {
+        if (Objects.isNull(uid)) {
+            return OpCode.PARAM_INVALID;
+        }
+        return this.userService.logoff(uid);
     }
 }
