@@ -1,6 +1,7 @@
 package com.github.bannirui.ekko.dal.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.github.bannirui.ekko.bean.constants.OpCode;
 import com.github.bannirui.ekko.dal.model.User;
 
 /**
@@ -18,14 +19,14 @@ public interface UserService extends IService<User> {
      * <li>set 用于统计在线用户</li>
      * </ul>
      *
-     * @return 操作状态码 {@link com.github.bannirui.ekko.constants.OpCode}
+     * @return 操作状态码 {@link OpCode}
      */
     long login(Long uid, String uname);
 
     /**
      * 退出登录. 登陆的用户没有设置缓存ttl 由退出登陆负责触发删除缓存.
      *
-     * @return 操作状态码. {@link com.github.bannirui.ekko.constants.OpCode}
+     * @return 操作状态码. {@link OpCode}
      */
     long logout(Long uid);
 

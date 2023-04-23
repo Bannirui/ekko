@@ -1,20 +1,30 @@
 package com.github.bannirui.ekko.req;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 /**
  * 退出登陆.
  *
  * @author dingrui
  * @since 2023/4/20
  */
-public class LogoutReq {
+public class LogoutReq implements Serializable {
 
-    private long uid;
+    @Serial
+    private static final long serialVersionUID = -4674694880540840657L;
 
-    public long getUid() {
+    private Long uid;
+
+    public LogoutReq(Long uid) {
+        this.uid = uid;
+    }
+
+    public Long getUid() {
         return uid;
     }
 
-    public void setUid(long uid) {
+    public void setUid(Long uid) {
         this.uid = uid;
     }
 }

@@ -2,8 +2,8 @@ package com.github.bannirui.ekko.service.impl;
 
 import com.github.bannirui.ekko.bean.dto.ImPeer;
 import com.github.bannirui.ekko.common.util.RedisUtil;
-import com.github.bannirui.ekko.constants.OpCode;
-import com.github.bannirui.ekko.constants.OpCode.Peer;
+import com.github.bannirui.ekko.bean.constants.OpCode;
+import com.github.bannirui.ekko.bean.constants.OpCode.Peer;
 import com.github.bannirui.ekko.constants.RedisKeyMGr;
 import com.github.bannirui.ekko.service.ImPeerService;
 import java.util.ArrayList;

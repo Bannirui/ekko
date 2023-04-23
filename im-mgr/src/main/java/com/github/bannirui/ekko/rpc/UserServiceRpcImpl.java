@@ -2,7 +2,7 @@ package com.github.bannirui.ekko.rpc;
 
 import com.github.bannirui.ekko.api.UserServiceRpc;
 import com.github.bannirui.ekko.bean.ImServerNode;
-import com.github.bannirui.ekko.constants.OpCode;
+import com.github.bannirui.ekko.bean.constants.OpCode;
 import com.github.bannirui.ekko.dal.model.User;
 import com.github.bannirui.ekko.dal.service.UserService;
 import com.github.bannirui.ekko.req.LoginReq;

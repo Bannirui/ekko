@@ -1,6 +1,8 @@
 package com.github.bannirui.ekko.resp;
 
 import com.github.bannirui.ekko.bean.ImServerNode;
+import java.io.Serial;
+import java.io.Serializable;
 
 /**
  * 用户登陆.
@@ -8,20 +10,23 @@ import com.github.bannirui.ekko.bean.ImServerNode;
  * @author dingrui
  * @since 2023/4/20
  */
-public class LoginResp {
+public class LoginResp implements Serializable {
 
-    private long opCode; // 操作状态码
+    @Serial
+    private static final long serialVersionUID = -1187020628512758471L;
+
+    private Long opCode; // 操作状态码
     private ImServerNode server; // im server
 
-    public LoginResp(long opCode) {
+    public LoginResp(Long opCode) {
         this.opCode = opCode;
     }
 
-    public long getOpCode() {
+    public Long getOpCode() {
         return opCode;
     }
 
-    public void setOpCode(long opCode) {
+    public void setOpCode(Long opCode) {
         this.opCode = opCode;
     }
 

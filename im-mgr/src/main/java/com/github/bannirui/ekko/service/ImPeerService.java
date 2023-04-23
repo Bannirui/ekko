@@ -1,5 +1,6 @@
 package com.github.bannirui.ekko.service;
 
+import com.github.bannirui.ekko.bean.constants.OpCode;
 import java.util.function.Consumer;
 
 /**
@@ -19,7 +20,7 @@ public interface ImPeerService {
      * 服务器上线.
      *
      * @param path ip:im-port
-     * @return 操作状态码 {@link com.github.bannirui.ekko.constants.OpCode}
+     * @return 操作状态码 {@link OpCode}
      */
     long add(String path);
 
@@ -27,7 +28,7 @@ public interface ImPeerService {
      * 服务器下线.
      *
      * @param path ip:im-port
-     * @return 操作状态码 {@link com.github.bannirui.ekko.constants.OpCode}
+     * @return 操作状态码 {@link OpCode}
      */
     long discard(String path);
 }

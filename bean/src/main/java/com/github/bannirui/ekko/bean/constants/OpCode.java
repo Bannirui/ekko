@@ -1,4 +1,4 @@
-package com.github.bannirui.ekko.constants;
+package com.github.bannirui.ekko.bean.constants;
 
 /**
  * 操作状态码.
@@ -22,14 +22,21 @@ public interface OpCode {
         // 用户不存在
         long NOT_EXIST = 1L << 1;
 
-        // 非注册用户
-        long NOT_REGISTER = 1L << 2;
+        interface Register {
 
-        // 未登陆
-        long NOT_LOGIN = 1L << 3;
+            // 非注册用户
+            long NOT_REGISTER = 1L << 2;
+        }
 
-        // 重复登陆
-        long RE_LOGIN = 1L << 4;
+
+        interface Login {
+
+            // 未登陆
+            long NOT_LOGIN = 1L << 3;
+
+            // 重复登陆
+            long RE_LOGIN = 1L << 4;
+        }
     }
 
     /**

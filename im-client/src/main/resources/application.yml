@@ -19,6 +19,7 @@ dubbo:
     serialization: hessian2
   consumer:
     check: false
+    retries: 0
 
 im-client:
   health:

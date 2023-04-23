@@ -2,9 +2,9 @@ package com.github.bannirui.ekko.dal.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.github.bannirui.ekko.bean.constants.OpCode;
 import com.github.bannirui.ekko.common.ex.BizException;
 import com.github.bannirui.ekko.common.util.RedisUtil;
-import com.github.bannirui.ekko.constants.OpCode;
 import com.github.bannirui.ekko.constants.RedisKeyMGr;
 import com.github.bannirui.ekko.dal.mapper.UserDao;
 import com.github.bannirui.ekko.dal.model.User;
@@ -57,11 +57,11 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
             return OpCode.User.NOT_EXIST;
         }
         if (!StringUtils.equals(uname, name)) {
-            return OpCode.User.NOT_REGISTER;
+            return OpCode.User.Register.NOT_REGISTER;
         }
         long status = this.self.loginCheck(uid, uname);
         if (status == OpCode.SUCC) {
-            return OpCode.User.RE_LOGIN;
+            return OpCode.User.Login.RE_LOGIN;
         }
         if (!RedisUtil.sSet(RedisKeyMGr.LOGIN_USER, uid)) {
             return OpCode.FAIL;
@@ -96,7 +96,7 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
     // 登陆用户信息查询
     @Cacheable(cacheNames = RedisKeyMGr.LOGIN_USER, key = "#uid+'_'+#uname")
     public long loginCheck(Long uid, String uname) {
-        return OpCode.User.NOT_LOGIN;
+        return OpCode.User.Login.NOT_LOGIN;
     }
 
     /**
