@@ -6,6 +6,8 @@ server:
 spring:
   application:
     name: im-client
+  main:
+    allow-circular-references: true
 
 dubbo:
   application:

@@ -2,6 +2,8 @@ package com.github.bannirui.ekko.netty.handler;
 
 import com.github.bannirui.ekko.bean.pb.MessageProto;
 import com.github.bannirui.ekko.common.util.SpringCtxUtil;
+import com.github.bannirui.ekko.messager.MessageHandler;
+import com.github.bannirui.ekko.messager.MessageHandlerArgs;
 import com.github.bannirui.ekko.service.HealthService;
 import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
@@ -21,14 +23,13 @@ public class MyHandler extends SimpleChannelInboundHandler<MessageProto.Message>
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        // TODO: 2023/4/19
-        LOG.info("[IM-SERVER] 客户端上线");
     }
 
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, MessageProto.Message message) throws Exception {
-        // TODO: 2023/4/19 服务端收到客户端
         LOG.info("[IM-SERVER] 收到客户端消息: {}", message);
+        MessageHandler handler = SpringCtxUtil.getBean(MessageHandler.class);
+        handler.process(message.getType(), new MessageHandlerArgs(message, channelHandlerContext.channel()));
     }
 
     @Override

@@ -13,6 +13,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.dubbo.config.annotation.DubboReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,6 +33,9 @@ public class UserController {
 
     @DubboReference(url = "dubbo://localhost:20882")
     private UserServiceRpc userServiceRpc;
+
+    @Value("${im-client.health.heart-beat.client-to-server-s}")
+    private int c2sHeartBeatS;
 
     /**
      * 注册新用户.
@@ -69,7 +73,7 @@ public class UserController {
         if (ret.getOpCode() == OpCode.SUCC) {
             String host = ret.getServer().getHost();
             int imPort = ret.getServer().getImPort();
-            new Thread(new ClientBoot(uid, host, imPort)).start(); // netty初始化
+            new Thread(new ClientBoot(uid, host, imPort, this.c2sHeartBeatS)).start(); // netty初始化
             return ResponseEntity.ok(new LoginResponse(ret.getOpCode(), host, imPort));
         }
         return ResponseEntity.ok(new LoginResponse(ret.getOpCode()));

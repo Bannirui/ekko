@@ -5,7 +5,7 @@ option java_multiple_files = false;
 
 message Message {
   int64 sender = 1; // sender uid
-  int64 receiver = 2; // receiver uid
-  int64 type = 3; // message type
+  int64 type = 2; // message type
+  int64 receiver = 3; // receiver uid
   string content = 4; // message content
 }

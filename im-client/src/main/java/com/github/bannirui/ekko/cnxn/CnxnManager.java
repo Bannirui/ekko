@@ -89,6 +89,10 @@ public class CnxnManager {
         this.senderMap.remove(uid);
     }
 
+    public void reConnect(){
+
+    }
+
     /**
      * 开放给客户端调用的发送消息.
      *

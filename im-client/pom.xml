@@ -15,12 +15,6 @@
   <dependencies>
     <dependency>
       <groupId>com.github.bannirui.ekko</groupId>
-      <artifactId>bean</artifactId>
-      <version>${project.parent.version}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>com.github.bannirui.ekko</groupId>
       <artifactId>common</artifactId>
       <version>${project.parent.version}</version>
     </dependency>

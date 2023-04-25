@@ -30,23 +30,23 @@ public final class MessageProto {
 
     /**
      * <pre>
-     * receiver uid
-     * </pre>
-     *
-     * <code>int64 receiver = 2;</code>
-     * @return The receiver.
-     */
-    long getReceiver();
-
-    /**
-     * <pre>
      * message type
      * </pre>
      *
-     * <code>int64 type = 3;</code>
+     * <code>int64 type = 2;</code>
      * @return The type.
      */
     long getType();
+
+    /**
+     * <pre>
+     * receiver uid
+     * </pre>
+     *
+     * <code>int64 receiver = 3;</code>
+     * @return The receiver.
+     */
+    long getReceiver();
 
     /**
      * <pre>
@@ -121,12 +121,12 @@ public final class MessageProto {
             }
             case 16: {
 
-              receiver_ = input.readInt64();
+              type_ = input.readInt64();
               break;
             }
             case 24: {
 
-              type_ = input.readInt64();
+              receiver_ = input.readInt64();
               break;
             }
             case 34: {
@@ -182,34 +182,34 @@ public final class MessageProto {
       return sender_;
     }
 
-    public static final int RECEIVER_FIELD_NUMBER = 2;
-    private long receiver_;
-    /**
-     * <pre>
-     * receiver uid
-     * </pre>
-     *
-     * <code>int64 receiver = 2;</code>
-     * @return The receiver.
-     */
-    @java.lang.Override
-    public long getReceiver() {
-      return receiver_;
-    }
-
-    public static final int TYPE_FIELD_NUMBER = 3;
+    public static final int TYPE_FIELD_NUMBER = 2;
     private long type_;
     /**
      * <pre>
      * message type
      * </pre>
      *
-     * <code>int64 type = 3;</code>
+     * <code>int64 type = 2;</code>
      * @return The type.
      */
     @java.lang.Override
     public long getType() {
       return type_;
+    }
+
+    public static final int RECEIVER_FIELD_NUMBER = 3;
+    private long receiver_;
+    /**
+     * <pre>
+     * receiver uid
+     * </pre>
+     *
+     * <code>int64 receiver = 3;</code>
+     * @return The receiver.
+     */
+    @java.lang.Override
+    public long getReceiver() {
+      return receiver_;
     }
 
     public static final int CONTENT_FIELD_NUMBER = 4;
@@ -275,11 +275,11 @@ public final class MessageProto {
       if (sender_ != 0L) {
         output.writeInt64(1, sender_);
       }
-      if (receiver_ != 0L) {
-        output.writeInt64(2, receiver_);
-      }
       if (type_ != 0L) {
-        output.writeInt64(3, type_);
+        output.writeInt64(2, type_);
+      }
+      if (receiver_ != 0L) {
+        output.writeInt64(3, receiver_);
       }
       if (!getContentBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 4, content_);
@@ -297,13 +297,13 @@ public final class MessageProto {
         size += com.google.protobuf.CodedOutputStream
           .computeInt64Size(1, sender_);
       }
-      if (receiver_ != 0L) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeInt64Size(2, receiver_);
-      }
       if (type_ != 0L) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt64Size(3, type_);
+          .computeInt64Size(2, type_);
+      }
+      if (receiver_ != 0L) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt64Size(3, receiver_);
       }
       if (!getContentBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, content_);
@@ -325,10 +325,10 @@ public final class MessageProto {
 
       if (getSender()
           != other.getSender()) return false;
-      if (getReceiver()
-          != other.getReceiver()) return false;
       if (getType()
           != other.getType()) return false;
+      if (getReceiver()
+          != other.getReceiver()) return false;
       if (!getContent()
           .equals(other.getContent())) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
@@ -345,12 +345,12 @@ public final class MessageProto {
       hash = (37 * hash) + SENDER_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
           getSender());
-      hash = (37 * hash) + RECEIVER_FIELD_NUMBER;
-      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-          getReceiver());
       hash = (37 * hash) + TYPE_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
           getType());
+      hash = (37 * hash) + RECEIVER_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+          getReceiver());
       hash = (37 * hash) + CONTENT_FIELD_NUMBER;
       hash = (53 * hash) + getContent().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
@@ -488,9 +488,9 @@ public final class MessageProto {
         super.clear();
         sender_ = 0L;
 
-        receiver_ = 0L;
-
         type_ = 0L;
+
+        receiver_ = 0L;
 
         content_ = "";
 
@@ -521,8 +521,8 @@ public final class MessageProto {
       public com.github.bannirui.ekko.bean.pb.MessageProto.Message buildPartial() {
         com.github.bannirui.ekko.bean.pb.MessageProto.Message result = new com.github.bannirui.ekko.bean.pb.MessageProto.Message(this);
         result.sender_ = sender_;
-        result.receiver_ = receiver_;
         result.type_ = type_;
+        result.receiver_ = receiver_;
         result.content_ = content_;
         onBuilt();
         return result;
@@ -575,11 +575,11 @@ public final class MessageProto {
         if (other.getSender() != 0L) {
           setSender(other.getSender());
         }
-        if (other.getReceiver() != 0L) {
-          setReceiver(other.getReceiver());
-        }
         if (other.getType() != 0L) {
           setType(other.getType());
+        }
+        if (other.getReceiver() != 0L) {
+          setReceiver(other.getReceiver());
         }
         if (!other.getContent().isEmpty()) {
           content_ = other.content_;
@@ -657,56 +657,13 @@ public final class MessageProto {
         return this;
       }
 
-      private long receiver_ ;
-      /**
-       * <pre>
-       * receiver uid
-       * </pre>
-       *
-       * <code>int64 receiver = 2;</code>
-       * @return The receiver.
-       */
-      @java.lang.Override
-      public long getReceiver() {
-        return receiver_;
-      }
-      /**
-       * <pre>
-       * receiver uid
-       * </pre>
-       *
-       * <code>int64 receiver = 2;</code>
-       * @param value The receiver to set.
-       * @return This builder for chaining.
-       */
-      public Builder setReceiver(long value) {
-        
-        receiver_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       * receiver uid
-       * </pre>
-       *
-       * <code>int64 receiver = 2;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearReceiver() {
-        
-        receiver_ = 0L;
-        onChanged();
-        return this;
-      }
-
       private long type_ ;
       /**
        * <pre>
        * message type
        * </pre>
        *
-       * <code>int64 type = 3;</code>
+       * <code>int64 type = 2;</code>
        * @return The type.
        */
       @java.lang.Override
@@ -718,7 +675,7 @@ public final class MessageProto {
        * message type
        * </pre>
        *
-       * <code>int64 type = 3;</code>
+       * <code>int64 type = 2;</code>
        * @param value The type to set.
        * @return This builder for chaining.
        */
@@ -733,12 +690,55 @@ public final class MessageProto {
        * message type
        * </pre>
        *
-       * <code>int64 type = 3;</code>
+       * <code>int64 type = 2;</code>
        * @return This builder for chaining.
        */
       public Builder clearType() {
         
         type_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private long receiver_ ;
+      /**
+       * <pre>
+       * receiver uid
+       * </pre>
+       *
+       * <code>int64 receiver = 3;</code>
+       * @return The receiver.
+       */
+      @java.lang.Override
+      public long getReceiver() {
+        return receiver_;
+      }
+      /**
+       * <pre>
+       * receiver uid
+       * </pre>
+       *
+       * <code>int64 receiver = 3;</code>
+       * @param value The receiver to set.
+       * @return This builder for chaining.
+       */
+      public Builder setReceiver(long value) {
+        
+        receiver_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * receiver uid
+       * </pre>
+       *
+       * <code>int64 receiver = 3;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearReceiver() {
+        
+        receiver_ = 0L;
         onChanged();
         return this;
       }
@@ -906,7 +906,7 @@ public final class MessageProto {
   static {
     java.lang.String[] descriptorData = {
       "\n\rmessage.proto\"J\n\007Message\022\016\n\006sender\030\001 \001" +
-      "(\003\022\020\n\010receiver\030\002 \001(\003\022\014\n\004type\030\003 \001(\003\022\017\n\007co" +
+      "(\003\022\014\n\004type\030\002 \001(\003\022\020\n\010receiver\030\003 \001(\003\022\017\n\007co" +
       "ntent\030\004 \001(\tB2\n com.github.bannirui.ekko." +
       "bean.pbB\014MessageProtoP\000b\006proto3"
     };
@@ -919,7 +919,7 @@ public final class MessageProto {
     internal_static_Message_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_Message_descriptor,
-        new java.lang.String[] { "Sender", "Receiver", "Type", "Content", });
+        new java.lang.String[] { "Sender", "Type", "Receiver", "Content", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

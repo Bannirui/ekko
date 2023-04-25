@@ -14,6 +14,9 @@ public interface OpCode {
     // 参数不符合校验
     long PARAM_INVALID = 1L;
 
+    // not support
+    long NOT_SUPPORT = 1L << 63;
+
     /**
      * 用户相关.
      */

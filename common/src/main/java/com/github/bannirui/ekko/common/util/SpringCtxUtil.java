@@ -1,6 +1,12 @@
 package com.github.bannirui.ekko.common.util;
 
+import java.lang.annotation.Annotation;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import org.apache.commons.collections.MapUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.context.ApplicationContext;
@@ -42,5 +48,16 @@ public class SpringCtxUtil implements ApplicationContextAware, DisposableBean {
             throw new IllegalStateException("ApplicationContext not exists.");
         }
         return ctx.getBean(name, requiredType);
+    }
+
+    public static List<Object> getBeansWithAnnotation(Class<? extends Annotation> clz) {
+        if (Objects.isNull(ctx)) {
+            throw new IllegalStateException("ApplicationContext not exists.");
+        }
+        Map<String, Object> beans = ctx.getBeansWithAnnotation(clz);
+        if (MapUtils.isEmpty(beans)) {
+            return Collections.emptyList();
+        }
+        return new ArrayList<>(beans.values());
     }
 }
