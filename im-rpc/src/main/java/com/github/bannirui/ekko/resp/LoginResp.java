@@ -37,4 +37,12 @@ public class LoginResp implements Serializable {
     public void setServer(ImServerNode server) {
         this.server = server;
     }
+
+    @Override
+    public String toString() {
+        return "LoginResp{"
+            + "opCode=" + opCode
+            + ", server=" + server
+            + '}';
+    }
 }

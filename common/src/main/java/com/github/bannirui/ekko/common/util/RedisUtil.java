@@ -13,6 +13,10 @@ public class RedisUtil {
 
     private static RedisTemplate<String, Object> redisTemplate = SpringCtxUtil.getBean("redisTemplate", RedisTemplate.class);
 
+    public static boolean del(String key) {
+        return redisTemplate.delete(key);
+    }
+
     public static <T> Set<T> sGet(String key, Class<T> type) {
         try {
             return ((Set<T>) redisTemplate.opsForSet().members(key));

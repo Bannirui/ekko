@@ -34,4 +34,12 @@ public class ImPeer {
     public void setImPort(int imPort) {
         this.imPort = imPort;
     }
+
+    @Override
+    public String toString() {
+        return "ImPeer{"
+            + "host='" + host + '\''
+            + ", imPort=" + imPort
+            + '}';
+    }
 }

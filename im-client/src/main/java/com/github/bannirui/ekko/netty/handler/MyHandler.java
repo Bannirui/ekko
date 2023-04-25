@@ -1,7 +1,6 @@
 package com.github.bannirui.ekko.netty.handler;
 
-import com.github.bannirui.ekko.bean.pb.TestProto;
-import com.github.bannirui.ekko.bean.pb.TestProto.Person;
+import com.github.bannirui.ekko.bean.pb.MessageProto;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import org.slf4j.Logger;
@@ -11,26 +10,20 @@ import org.slf4j.LoggerFactory;
  * @author dingrui
  * @since 2023/4/19
  */
-public class MyHandler extends SimpleChannelInboundHandler<TestProto.Person> {
+public class MyHandler extends SimpleChannelInboundHandler<MessageProto.Message> {
 
     private static final Logger LOG = LoggerFactory.getLogger(MyHandler.class);
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         // TODO: 2023/4/19
-        Person obj = Person.newBuilder()
-            .setId("1")
-            .setEmail("email")
-            .setSex(1)
-            .build();
-        LOG.info("[IM-CLIENT] 客户端连上了服务端 准备向服务端写数据: {}", obj);
-        ctx.writeAndFlush(obj);
+        LOG.info("[IM-CLIENT] 客户端连上了服务端 准备向服务端写数据");
     }
 
     @Override
-    protected void channelRead0(ChannelHandlerContext channelHandlerContext, Person person) throws Exception {
+    protected void channelRead0(ChannelHandlerContext channelHandlerContext, MessageProto.Message message) throws Exception {
         // TODO: 2023/4/19
-        LOG.info("[IM-CLIENT] 收到服务端回传数据: {}", person);
+        LOG.info("[IM-CLIENT] 收到服务端回传数据: {}", message);
     }
 
     @Override

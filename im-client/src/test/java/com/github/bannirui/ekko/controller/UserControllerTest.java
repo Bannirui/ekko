@@ -21,7 +21,7 @@ public class UserControllerTest {
     @Autowired
     private UserController userController;
 
-    private static final long uid = 1682257807374L;
+    private static final long uid = 1682384581891L;
     private static final String uname = "1";
 
     @Test

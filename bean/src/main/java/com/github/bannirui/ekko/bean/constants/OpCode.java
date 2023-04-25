@@ -46,4 +46,16 @@ public interface OpCode {
         // 服务器已经在线
         long ALREADY_ONLINE = 1L << 5;
     }
+
+    interface Sender {
+
+        /**
+         * 并未登陆成功.
+         * <ul>登陆的语义是
+         * <li>1 用户管理层面的登陆</li>
+         * <li>2 成功初始化出netty的channel并且缓存在内存中</li>
+         * </ul>
+         */
+        long LOGIN_FAIL = 1L << 6;
+    }
 }

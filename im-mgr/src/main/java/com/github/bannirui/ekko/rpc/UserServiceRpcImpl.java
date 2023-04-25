@@ -14,6 +14,8 @@ import com.github.bannirui.ekko.service.ImPeerService;
 import java.util.Objects;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.dubbo.config.annotation.DubboService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 用户管理.
@@ -23,6 +25,8 @@ import org.apache.dubbo.config.annotation.DubboService;
  */
 @DubboService
 public class UserServiceRpcImpl implements UserServiceRpc {
+
+    private static final Logger LOG = LoggerFactory.getLogger(UserServiceRpcImpl.class);
 
     private final UserService userService;
     private final ImPeerService imPeerService;
@@ -49,16 +53,18 @@ public class UserServiceRpcImpl implements UserServiceRpc {
         }
         long state = this.userService.login(req.getUid(), req.getUname());
         LoginResp resp = new LoginResp(state);
+        LOG.info("[IM-MGR] 用户uid={}, uname={} 登陆结果={}", req.getUid(), req.getUname(), state);
         if (state != OpCode.SUCC) {
             return resp;
         }
         String[] host = new String[1];
-        Integer[] ip = new Integer[1];
-        if (!this.imPeerService.lb(x -> host[0] = x, y -> ip[0] = y)) {
+        Integer[] port = new Integer[1];
+        if (!this.imPeerService.lb(x -> host[0] = x, y -> port[0] = y)) {
             resp.setOpCode(Peer.NOT_EXIST);
             return resp;
         }
-        resp.setServer(new ImServerNode(host[0], ip[0]));
+        LOG.info("[IM-MGR] 响应给客户端的服务器 host={} port={}", host[0], port[0]);
+        resp.setServer(new ImServerNode(host[0], port[0]));
         return resp;
     }
 

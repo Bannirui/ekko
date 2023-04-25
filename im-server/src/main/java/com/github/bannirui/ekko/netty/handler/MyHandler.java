@@ -1,7 +1,6 @@
 package com.github.bannirui.ekko.netty.handler;
 
-import com.github.bannirui.ekko.bean.pb.TestProto;
-import com.github.bannirui.ekko.bean.pb.TestProto.Person;
+import com.github.bannirui.ekko.bean.pb.MessageProto;
 import com.github.bannirui.ekko.common.util.SpringCtxUtil;
 import com.github.bannirui.ekko.service.HealthService;
 import io.netty.channel.ChannelHandler.Sharable;
@@ -16,7 +15,7 @@ import org.slf4j.LoggerFactory;
  * @since 2023/4/19
  */
 @Sharable
-public class MyHandler extends SimpleChannelInboundHandler<TestProto.Person> {
+public class MyHandler extends SimpleChannelInboundHandler<MessageProto.Message> {
 
     private static final Logger LOG = LoggerFactory.getLogger(MyHandler.class);
 
@@ -27,9 +26,9 @@ public class MyHandler extends SimpleChannelInboundHandler<TestProto.Person> {
     }
 
     @Override
-    protected void channelRead0(ChannelHandlerContext channelHandlerContext, Person person) throws Exception {
-        // TODO: 2023/4/19
-        LOG.info("[IM-SERVER] 收到客户端消息: {}", person);
+    protected void channelRead0(ChannelHandlerContext channelHandlerContext, MessageProto.Message message) throws Exception {
+        // TODO: 2023/4/19 服务端收到客户端
+        LOG.info("[IM-SERVER] 收到客户端消息: {}", message);
     }
 
     @Override

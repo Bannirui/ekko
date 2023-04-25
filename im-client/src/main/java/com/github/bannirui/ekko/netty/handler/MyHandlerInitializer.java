@@ -1,6 +1,6 @@
 package com.github.bannirui.ekko.netty.handler;
 
-import com.github.bannirui.ekko.bean.pb.TestProto;
+import com.github.bannirui.ekko.bean.pb.MessageProto;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;
 import io.netty.handler.codec.protobuf.ProtobufDecoder;
@@ -18,7 +18,7 @@ public class MyHandlerInitializer extends ChannelInitializer<Channel> {
     protected void initChannel(Channel channel) throws Exception {
         channel.pipeline()
             .addLast(new ProtobufVarint32FrameDecoder()) // 帧解码器
-            .addLast(new ProtobufDecoder(TestProto.Person.getDefaultInstance())) // 解码器
+            .addLast(new ProtobufDecoder(MessageProto.Message.getDefaultInstance())) // 解码器
             .addLast(new ProtobufVarint32LengthFieldPrepender()) // 拆包
             .addLast(new ProtobufEncoder()) // 编码器
             .addLast(new MyHandler());

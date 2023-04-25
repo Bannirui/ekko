@@ -1,6 +1,6 @@
 package com.github.bannirui.ekko.starter;
 
-import com.github.bannirui.ekko.constants.RedisKeyMGr;
+import com.github.bannirui.ekko.constants.RedisKeyMGr.Peer;
 import com.github.bannirui.ekko.constants.RedisKeyMGr.User;
 import java.time.Duration;
 import java.util.HashMap;
@@ -35,7 +35,7 @@ public class RedisCacheStarterConfig {
     private Map<String, RedisCacheConfiguration> redisCacheConfigurationMap() {
         Map<String, RedisCacheConfiguration> map = new HashMap<>();
         // 按照分组级别 自定义ttl时间
-        map.put(RedisKeyMGr.ONLINE_PEER, this.redisCacheConfigurationWithTTL(-1L)); // 在线的服务器
+        map.put(Peer.ALREADY_ONLINE, this.redisCacheConfigurationWithTTL(-1L)); // 在线的服务器
         map.put(User.ALREADY_LOGIN, this.redisCacheConfigurationWithTTL(-1L)); // 登陆的用户
         return map;
     }
