@@ -23,6 +23,4 @@ a IM system implements via Java, basing on Netty.
 
 ### 2 系统架构
 
-### 3 快速启动
-
-### 4 内置命令
+![](./docs/img/image-20230425215012152.png)
